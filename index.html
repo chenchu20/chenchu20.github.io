@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animal Backgrounds Button</title>
+  <style>
+    body, html {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      transition: background-image 0.5s ease-in-out;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .background-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      outline: none;
+      transition: transform 0.1s ease-in-out;
+      z-index: 10;
+      position: relative;
+    }
+
+    .background-button:active {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <button class="background-button" id="backgroundButton">Change Background</button>
+
+  <script>
+    const button = document.getElementById('backgroundButton');
+    const backgrounds = [
+      'url("https://cdn.pixabay.com/photo/2023/07/11/11/57/clownfish-8120313_1280.png")',
+      'url("https://png.pngtree.com/background/20230427/original/pngtree-clownfish-in-coral-reef-aquarium-picture-image_2494343.jpg")',
+      'url("https://aimadeimage.net/wp-content/uploads/2024/06/fish-background-wallpaper-2.jpg")',
+      'url("https://img.lovepik.com/bg/20231212/toy-disney-clown-fish-movie-hd-desktop-wallpaper-hdfree-wallpaper_2451497_wh1200.png")',
+      'url("https://wallpapers.com/images/hd/4k-fish-jnjyzekiy2y96cdt.jpg")'
+    ];
+    let currentBackgroundIndex = 0;
+
+    button.addEventListener('click', () => {
+      // Change background
+      document.body.style.backgroundImage = backgrounds[currentBackgroundIndex];
+      currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
+
+      // Optional: Trigger vibration
+      if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]);
+      }
+    });
+  </script>
+</body>
+</html>
