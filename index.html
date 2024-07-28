@@ -3,63 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Animal Backgrounds Button</title>
+  <title>Round Color Buttons with Paint Drop Effect</title>
   <style>
     body, html {
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-wrap: wrap;
       height: 100%;
       margin: 0;
       font-family: Arial, sans-serif;
-      transition: background-image 0.5s ease-in-out;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background-color: #f0f0f0;
+      transition: background-color 0.5s ease;
+      overflow: hidden;
     }
 
-    .background-button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 15px 30px;
+    .color-button {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
       border: none;
-      border-radius: 8px;
-      font-size: 18px;
+      border-radius: 50%;
+      font-size: 16px;
+      color: white;
       cursor: pointer;
       outline: none;
       transition: transform 0.1s ease-in-out;
-      z-index: 10;
-      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
 
-    .background-button:active {
+    .color-button:active {
       transform: scale(1.1);
+    }
+
+    .color-button.red { background-color: #f44336; }
+    .color-button.green { background-color: #4CAF50; }
+    .color-button.blue { background-color: #2196F3; }
+    .color-button.yellow { background-color: #FFEB3B; color: black; }
+    .color-button.orange { background-color: #FF9800; }
+    .color-button.purple { background-color: #9C27B0; }
+    .color-button.pink { background-color: #E91E63; }
+    .color-button.brown { background-color: #795548; }
+    .color-button.grey { background-color: #9E9E9E; }
+    .color-button.black { background-color: #000000; }
+
+    .paint-drop {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      width: 0;
+      height: 0;
+      background-color: transparent;
+      opacity: 0.7;
+      z-index: -1;
+      transition: width 0.5s ease, height 0.5s ease, background-color 0.5s ease;
+    }
+
+    .paint-drop.show {
+      width: 300%;
+      height: 300%;
     }
   </style>
 </head>
 <body>
-  <button class="background-button" id="backgroundButton">Change Background</button>
+  <button class="color-button red">Red</button>
+  <button class="color-button green">Green</button>
+  <button class="color-button blue">Blue</button>
+  <button class="color-button yellow">Yellow</button>
+  <button class="color-button orange">Orange</button>
+  <button class="color-button purple">Purple</button>
+  <button class="color-button pink">Pink</button>
+  <button class="color-button brown">Brown</button>
+  <button class="color-button grey">Grey</button>
+  <button class="color-button black">Black</button>
+
+  <div id="paintDrop" class="paint-drop"></div>
+
+  <audio id="clickSound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
 
   <script>
-    const button = document.getElementById('backgroundButton');
-    const backgrounds = [
-      'url("https://cdn.pixabay.com/photo/2023/07/11/11/57/clownfish-8120313_1280.png")',
-      'url("https://png.pngtree.com/background/20230427/original/pngtree-clownfish-in-coral-reef-aquarium-picture-image_2494343.jpg")',
-      'url("https://aimadeimage.net/wp-content/uploads/2024/06/fish-background-wallpaper-2.jpg")',
-      'url("https://img.lovepik.com/bg/20231212/toy-disney-clown-fish-movie-hd-desktop-wallpaper-hdfree-wallpaper_2451497_wh1200.png")',
-      'url("https://wallpapers.com/images/hd/4k-fish-jnjyzekiy2y96cdt.jpg")'
-    ];
-    let currentBackgroundIndex = 0;
+    const buttons = document.querySelectorAll('.color-button');
+    const paintDrop = document.getElementById('paintDrop');
+    const clickSound = document.getElementById('clickSound');
 
-    button.addEventListener('click', () => {
-      // Change background
-      document.body.style.backgroundImage = backgrounds[currentBackgroundIndex];
-      currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Play sound
+        clickSound.currentTime = 0;
+        clickSound.play();
 
-      // Optional: Trigger vibration
-      if (navigator.vibrate) {
-        navigator.vibrate([100, 50, 100]);
-      }
+        // Trigger vibration
+        if (navigator.vibrate) {
+          navigator.vibrate([100, 50, 100]);
+        }
+
+        // Get the background color of the clicked button
+        const bgColor = window.getComputedStyle(button).backgroundColor;
+
+        // Apply the paint drop effect
+        paintDrop.style.backgroundColor = bgColor;
+        paintDrop.classList.add('show');
+
+        // Change the background color of the body
+        setTimeout(() => {
+          document.body.style.backgroundColor = bgColor;
+          paintDrop.classList.remove('show');
+        }, 500);
+      });
     });
   </script>
 </body>
